@@ -3,6 +3,7 @@ import { Button, Container, Form, Table } from "react-bootstrap";
 import { evaluate } from 'mathjs'
 import { AskQuestion } from "../service/util/eQuation";
 import { LineChart } from "../component/LineChart";
+import axios from "axios";
 
 const FalsePosition =()=>{
 
@@ -106,15 +107,15 @@ const FalsePosition =()=>{
     }
 
     const Random=()=>{/*ใช้เรียกฟังก์ชั่นสุ่มสมการ และทำการสุ่มตัวเลขและเครื่องหมายเข้าไปเติมใน Xl และ XR */
-        setEquation(AskQuestion)
-        let ranXL = Math.floor(Math.random()*100+1); // 57
-        let ranXR = Math.floor(Math.random()*100+1); // 98
-
-        ranXL = Math.floor(Math.random()*2+1) === 1? ranXL: ranXL*-1
-        ranXR = Math.floor(Math.random()*2+1) === 1? ranXR: ranXR*-1
-
-        setXL(ranXL)
-        setXR(ranXR)
+        axios.get('https://virtserver.swaggerhub.com/DeathStar21/Numerical/1.0.0/false-position')
+        .then((resp) => {
+            const data = resp.data
+            const num = Math.floor(Math.random()*data.length)
+            
+            setEquation(data[num].equation)
+            setXL(data[num].xl)
+            setXR(data[num].xr)
+        })
     }
     return (
             <Container>
